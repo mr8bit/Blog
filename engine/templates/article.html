@@ -1,0 +1,243 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<style type="text/css" media="screen">
+	.card .card-action a:not(.btn):not(.btn-large):not(.btn-floating) {
+		color: #f44336;
+		margin-right: 5px;
+		transition: color .3s ease;
+		text-transform: none;
+	}
+	.card .card-action a:not(.btn):not(.btn-large):not(.btn-floating):hover {
+		color: #ef9a9a;
+	}
+	.chip i.material-icons {
+		cursor: pointer;
+		float: left;
+		padding-right: 8px;
+		font-size: 16px;
+		line-height: 32px;
+		padding-left: 0px; }
+		select {
+			display: block;
+		}
+		h1 {
+    font-size: 2.2rem;
+    line-height: 110%;
+    margin:1.0rem 0 1.0rem 0;
+}.card .card-content p {
+    margin: 10px 0;
+    color: inherit;
+}
+</style>
+<div class="row">
+		<div class="card">
+
+
+			<div class="card-content">
+				<p>{{ article.time }}</p> 
+				<h1>{{ article }}</h1>
+				<p> {{ article.content|safe }}</p>
+			</div>
+			<div class="card-action">
+				<div class="chip">
+					Категории:{% for categ in article.category.all %}
+					<a href="/category/{{categ.slug_category}}" >{{categ.name}}</a>
+					{% endfor %}
+				</div>
+				<div class="chip">
+					Тэги:{% for tag in article.tags.all %}
+					<a href="/category/{{categ.slug}}" >{{tag.name}}</a>
+					{% endfor %}
+				 
+			</div>
+		</div>
+</div>
+
+{% if comment %}
+	<h5> Комментарии</h5>
+
+
+{%  for commen in comment %}
+				{% if not commen.anser_on_id %}
+						<div style="border-bottom: 1px solid #DFDFDF;" class="card white">
+							<div class="card-content">
+									<h6 class="media-heading">{{commen.name}}  
+										  </h6>
+								{{commen.time}} 
+								<p>{{commen.comment|safe}}</p>
+							</div>          
+							<div class="card-action">
+								<div class="chip">
+									<a data='{{commen.name}}' onclick="iHaveAnswer(this)" id='{{commen.id}}' href="#answer">
+										Ответить
+									</a></div>
+							</div>     
+						</div>
+					{% for comme in comment %}
+					{% if comme.anser_on_id == commen.id %}
+					<div class="row">
+						<div class="col  s12  l11 right">
+							<div style="border-bottom: 1px solid #DFDFDF;" class="card white">
+								<div class="card-content">
+									<h6 class="media-heading">{{comme.name}}  
+										 
+									</h6>  
+									{{comme.time}} 
+								<p>{{comme.comment|safe}}</p>
+								</div>
+									<div class="card-action">
+								<div class="chip">
+									<a data='{{comme.name}}' onclick="iHaveAnswer(this)" id='{{comme.id}}' href="#answer">
+										Ответить
+									</a></div>
+							</div> 
+							</div>
+						</div>
+					</div>
+						{% for comm in comment %}
+						 {% if comm.anser_on_id == comme.id %}
+						 <div class="row"> <div class="col  s12  l10 right" >
+						 	<div style="border-bottom: 1px solid #DFDFDF;" class="card white">
+						 		<div class="card-content">
+						 			<h6 class="media-heading">{{comm.name}}  
+						 				 
+						 			</h6>  
+						 			{{comm.time}} 
+									<p>{{comm.comment|safe}}</p>
+						 			</div>
+								<div class="card-action">
+								<div class="chip">
+									<a data='{{comm.name}}' onclick="iHaveAnswer(this)" id='{{comm.id}}' href="#answer">
+										Ответить
+									</a></div>
+							</div> 				
+						 		</div>
+						 	</div>
+						 </div>
+						   {% for com in comment %}
+						   		{% if com.anser_on_id == comm.id %}
+						   		<div class="row"> <div class="col  s12  l9 right" >
+						 	<div style="border-bottom: 1px solid #DFDFDF;" class="card white">
+						 		<div class="card-content">
+						 			<h6 class="media-heading">{{com.name}} 
+						  
+						 				</h6>  
+						 				{{com.time}} 
+									<p>{{com.comment|safe}}</p>
+						 			</div>
+						 			<div class="card-action">
+								<div class="chip">
+									<a data='{{com.name}}' onclick="iHaveAnswer(this)" id='{{com.id}}' href="#answer">
+										Ответить
+									</a></div>
+							</div>
+						 		</div>
+						 	</div>
+						 </div>  
+							{% for co in comment %}
+							{% if co.anser_on_id == com.id %}
+							<div class="row"> <div class="col  s12  l8 right" >
+						 	<div style="border-bottom: 1px solid #DFDFDF;" class="card white">
+						 		<div class="card-content">
+						 			<h6 class="media-heading">{{co.name}}  
+ 						 				 </h6>  
+						 				{{co.time}} 
+									<p>{{co.comment|safe}}</p>
+						 			</div>
+						 			<div class="card-action">
+								<div class="chip">
+									<a data='{{co.name}}' onclick="iHaveAnswer(this)" id='{{co.id}}' href="#answer">
+										Ответить
+									</a></div>
+							</div>
+						 		</div>
+						 	</div>
+						 </div>
+						 	{% for c in comment %}
+						 		{% if c.anser_on_id == co.id %}
+						 		<div class="row"> <div class="col s12 l7 right" >
+						 	<div style="border-bottom: 1px solid #DFDFDF;" class="card white">
+						 		<div class="card-content">
+						 			<h6 class="media-heading">{{c.name}}  
+						 			 </h6>  
+						 				{{c.time}} 
+									<p>{{c.comment|safe}}</p>
+						 			</div>
+						 			<div class="card-action">
+								<div class="chip">
+									<a data='{{c.name}}' onclick="iHaveAnswer(this)" id='{{c.id}}' href="#answer">
+										Ответить
+									</a></div>
+							</div>
+						 		</div>
+						 	</div>
+						 </div>
+						 		{% endif %}
+						 	{% endfor %}
+							{% endif %}
+							{% endfor %}
+						   		{% endif %}				 
+							
+						   {% endfor %}
+						 {% endif %}
+						{% endfor %}
+					{% endif %}
+					{% endfor%}
+				 
+			{% endif %}
+
+{% endfor%}
+
+
+{% endif %}
+<script type="text/javascript">
+	function iHaveAnswer(object)
+	{
+		var answer_id = object.id;
+		$('#id_anser_on').val(answer_id);
+		$('#answer_title').text('Ответить на вопрос пользователя '+ object.getAttribute('data'))
+		$('html,body').stop().animate({ scrollTop: $('#answer').offset().top }, 1000);
+	}
+</script>
+<form action="/article/{{article.slug}}" method="post">{% csrf_token %}
+
+	<div class="card" id="answer">
+		<div class="card-content">
+		 <h1 class="card-title" id="answer_title">Добавить комментарий</h1>
+		 <div class="input-field">
+			 {{ comment_form.name }}
+			 <label for="password">{{ comment_form.name.label }}</label>
+		 </div>
+		 <div class="input-field">
+			 {{ comment_form.email }}
+			 <label for=" {{ comment_form.email.id }}">{{ comment_form.email.label }}</label>
+		 </div>
+		 <div  >
+			 <label style='font-size: 1rem;'>{{ comment_form.comment.label }}</label>
+			 {{ comment_form.comment }}
+		 </div>
+		 <div class="input-field">
+			 {{ comment_form.captcha }}
+		 </div>
+		 {{ comment_form.anser_on }}
+	 </div>
+	 <div class="card-action">
+		 <button class="btn waves-effect waves-light  " type="submit" name="action">Добавить
+			<i class="material-icons right">send</i>
+		</button>
+	</div>
+</div>
+
+
+
+</form>
+
+
+<style type="text/css">
+	#id_anser_on{
+		display: none;
+	}
+</style>
+{% endblock%}

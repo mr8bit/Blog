@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+{% load sekizai_tags %}
+
+<html >
+<head> 
+    {% include "meta/meta.html" %}  
+ 
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+      <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <link rel="stylesheet" type="text/css" href="{% static 'css/materialize.min.css' %}">
+      <link rel="stylesheet" type="text/css" href="{% static 'css/prism.css' %}">
+
+   
+
+
+ 
+ 
+</head>
+<body>
+<style>
+  .card .card-content .card-title {
+    line-height: 30px;
+}
+  body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;  background: #f0f0f0;
+  }
+.chip {
+    margin-top: 5px;
+  }
+  main {
+    flex: 1 0 auto;
+  }
+</style>
+<header>
+<div class="container">
+       <div  class="center-align" >
+      <center>
+      <a href="/">
+                <div class=" " style="background:url('{% static 'img/logo4.png' %}'), no-repeat; width:200px;background-size: 200px; height:287px;margin:10px"></div>
+          </a>
+     </center>
+
+   
+      </div> 
+      </div>
+ 
+   <nav>
+    <div class="container">
+
+     <div class="nav-wrapper ">
+       <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons" style="color:black" >menu</i></a>
+ <ul class="left hide-on-med-and-down">
+
+    {% for catego in category %}
+       {% if not catego.parent_id  %}
+          <li>
+          {% if catego.type_menu == 'p' %}
+               <a class="button" href="{% url 'page' catego.slug_category%}">
+                    {{catego.name}}
+               </a>
+          {% else %}
+            <a class="button" href="{% url 'category' catego.slug_category%}">
+                    {{catego.name}}
+               </a>
+          {% endif %}
+         
+          </li>
+
+        {% endif %}
+  
+       {% endfor %}
+ </ul>
+      <ul class="side-nav" id="mobile-demo">
+            {% for catego in category %}
+                     {% if not catego.parent_id %}
+                             <li><a class="button" href="{% url 'category' catego.slug_category%}">
+                                   {{catego.name}}</a></li>
+                     {% else %}
+
+                     {% endif %}
+
+                
+                        {% endfor %}
+      </ul>
+    </div>
+   </div>
+    
+  </nav>
+</header>
+ 
+ 
+ 
+ <main>
+<div class="container">
+    <div class="row">
+        <div class="col s12 m12 l12">
+            {% block content %}
+            {% endblock %}
+        </div>
+        
+    </div>
+</div>
+</main>
+        <footer class="page-footer" style="background:#fff;">
+          <div class="container">
+            <div class="row">
+              <div class="col l6 s12">
+                <h5 class="black-text">Footer Content</h5>
+                <p class="black-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
+              </div>
+              <div class="col l4 offset-l2 s12">
+                <h5 class="black-text">Links</h5>
+                <ul>
+                  <li><a class="black-text text-lighten-3" href="#!">Link 1</a></li>
+                  <li><a class="black-text text-lighten-3" href="#!">Link 2</a></li>
+                  <li><a class="black-text text-lighten-3" href="#!">Link 3</a></li>
+                  <li><a class="black-text text-lighten-3" href="#!">Link 4</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="footer-copyright" style="background:#272822">
+            <div class="container white-text">
+            © 2014 Copyright Text
+            <a class="white-text text-lighten-4 right" href="#!">More Links</a>
+            </div>
+          </div>
+        </footer>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+<script type="text/javascript" src="{% static 'js/materialize.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/prism.js' %}"></script>
+<script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+<script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
+
+<script>
+$( document ).ready(function(){
+        $(".dropdown-button").dropdown({
+                inDuration: 300,
+      outDuration: 225,
+      constrain_width: false, // Does not change width of dropdown to that of the activator
+       gutter: 0, // Spacing from edge
+      belowOrigin: true , // Displays dropdown below the button
+      alignment: 'left', // Displays dropdown with edge aligned to the left of button
+ 
+        });
+    $(".button-collapse").sideNav();
+          $('img').addClass('responsive-img');
+          if($("img").hasClass("content_img")){
+
+          }
+          else{
+            $('img').addClass('materialboxed');
+          }
+          $('img').removeAttr("style");
+            
+          $('.materialboxed').materialbox();
+
+})
+</script>
+</body>
+</html>
