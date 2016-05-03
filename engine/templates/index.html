@@ -1,12 +1,86 @@
 {% extends 'base.html' %}
 
+ 
 {% block content %}
+ <style type="text/css" media="screen">
+   .card .card-content p {
+    margin: 10px 0;
+    color: inherit;
+} .card .card-action a:not(.btn):not(.btn-large):not(.btn-floating) {
+    color: #f44336;
+    margin-right: 5px;
+    transition: color .3s ease;
+    text-transform: none;
+  }
+  .card .card-action a:not(.btn):not(.btn-large):not(.btn-floating):hover {
+    color: #ef9a9a;
+  }
+  .chip i.material-icons {
+    cursor: pointer;
+    float: left;
+    padding-right: 8px;
+    font-size: 16px;
+    line-height: 32px;
+    padding-left: 0px; }
+    select {
+      display: block;
+    }
+    h1 {
+    font-size: 2.2rem;
+    line-height: 110%;
+    margin:1.0rem 0 1.0rem 0;
+}
+ </style>
+    
+     
+         {% for article in articles %}
+          
+               <div class="card">
+               <div class="card-content black-text">
+             <a style="color:black" href="{% url 'article' article.slug %}">  <span class="card-title">{{ article }}</span></a>
+               <p>{{ article.time }}   </p> 
+         
+              <p>{{ article.summary|safe }}<br></p>
+            </div>
+            <div class="card-action">
+        <div class="chip">
+          Категории:{% for categ in article.category.all %}
+          <a href="/category/{{categ.slug_category}}" >{{categ.name}}</a>
+          {% endfor %}
+        </div>
+      
+      </div>
+          </div>
+           
 
-    {% for article in articles %}
-        <h2>{{ article }}</h2>
-        <p>{{ article.time }}</p>
-        {{ article.summary|safe }}<br>
-        <a class="btn btn-primary" type="button" href="{% url 'article' article.slug %}">Подробнее</a>
-    {% endfor %}
+     {% endfor %}
+  
+
+
+ 
+
+   
+        
+ 
+            <ul class="pagination">
+                {% if articles.has_previous %}
+                    <li class="waves-effect"><a href="/page/{{ articles.previous_page_number }}"><i class="material-icons">chevron_left</i></a></li>
+                 {% else %}
+                   <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
+                {% endif %}
+                {% for page in articles.paginator.page_range %}
+                    {% if page == articles.number %}
+                        <li class="active"><a href="/page/{{ page }}">{{ page }}</a></li>
+                    {% else %}
+                        <li><a href="/page/{{ page }}">{{ page }}</a></li>
+                    {% endif %}
+                {% endfor %}
+                {% if articles.has_next %}
+                    <li class="waves-effect"><a href="/page/{{ articles.next_page_number }}"><i class="material-icons">chevron_right</i></a></li>
+                {% else %}
+                   <li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+                {% endif %}
+            </ul>
+ 
 
 {% endblock %}

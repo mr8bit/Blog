@@ -22,9 +22,8 @@ from blog import settings
 from django.conf.urls.static import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 urlpatterns = [
-    url(r'^$', home, name='home'),
-    url(r'^blog/', include(blog_urls)),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^ckeditor/', include('ckeditor_uploader.urls')),
+    url(r'^', include(blog_urls)),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += staticfiles_urlpatterns()

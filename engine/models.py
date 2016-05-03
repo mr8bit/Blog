@@ -4,20 +4,22 @@ from meta.models import ModelMeta
 from ckeditor_uploader.fields import RichTextUploadingField
 
 class Article(ModelMeta,models.Model):
-    time = models.DateTimeField(auto_now_add=True)
-    title = models.CharField(max_length=100)
-    slug = models.SlugField()
-    meta_keywords = models.TextField(verbose_name= u'SEO keywords', blank=True, default='')
-    meta_description = models.TextField(verbose_name= u'SEO description', blank=True, default='')
-    summary = RichTextUploadingField(blank=True, default='', verbose_name='Краткое описание')
-    content = RichTextUploadingField(blank=True, default='', verbose_name='Статья')
-  
-    likes = models.IntegerField(default=0)
-    def __str__(self):
-        return self.title
-    class Meta:
-        ordering =['-time']
-    _metadata = {
+	time = models.DateTimeField(auto_now_add=True)
+	title = models.CharField(max_length=100)
+	slug = models.SlugField()
+	meta_keywords = models.TextField(verbose_name= u'SEO keywords', blank=True, default='')
+	meta_description = models.TextField(verbose_name= u'SEO description', blank=True, default='')
+	summary = RichTextUploadingField(blank=True, default='', verbose_name='Краткое описание')
+	content = RichTextUploadingField(blank=True, default='', verbose_name='Статья')
+	category = models.ManyToManyField('Category', default='')
+	tags = models.ManyToManyField('Tag', default='')	  
+	likes = models.IntegerField(default=0)
+
+	def __str__(self):
+		return self.title
+	class Meta:
+		ordering =['-time']
+	_metadata = {
 		'title': 'title',
 		'use_title_tag': 'True',
 		'description': 'get_description',
@@ -30,14 +32,14 @@ class Article(ModelMeta,models.Model):
     
  
 
-    def get_keywords(self):
-        return self.meta_keywords.strip().split(',')
+	def get_keywords(self):
+		return self.meta_keywords.strip().split(',')
 
-    def get_description(self):
-        description = self.meta_description
-        if  not description:
-            description = self.summary
-        return description.strip()
+	def get_description(self):
+		description = self.meta_description
+		if  not description:
+			description = self.summary
+		return description.strip()
 
 
 class Comments(models.Model):
@@ -55,3 +57,77 @@ class Comments(models.Model):
 	class Meta:
 		ordering =['-time']
 		db_table = 'comments'
+STATUS_CHOICES = (
+    ('p', 'Страница'),
+    ('c', 'Категория'),
+)
+class Category(ModelMeta, models.Model):
+	name = models.CharField(max_length=255, verbose_name = 'Название')
+	slug_category = models.SlugField()
+	parent = models.ForeignKey('self',blank=True, null=True)
+	sort_in_menu = models.CharField(max_length=255, verbose_name = 'Сортировка меню',default='')
+	type_menu = models.CharField(max_length=1,choices=STATUS_CHOICES, default='')
+	meta_keywords = models.TextField(verbose_name= u'SEO keywords', blank=True, default='')
+	meta_description = models.TextField(verbose_name= u'SEO description', blank=True, default='')
+    
+	_metadata = {
+		'title': 'name',
+		'use_title_tag': 'True',
+		'description': 'get_description',
+		'keywords': 'get_keywords', 
+	}
+	def __str__(self):
+		return self.name
+	def get_keywords(self):
+		return self.meta_keywords.strip().split(',')
+	def get_description(self):
+		description = self.meta_description
+		return description.strip()
+	class Meta:
+		db_table='categorys'
+
+class Page(ModelMeta,models.Model):
+	title = models.CharField(max_length=255)
+	date_created = models.DateTimeField(auto_now_add=True)
+	slug = models.SlugField()
+	meta_keywords = models.TextField(verbose_name= u'SEO keywords', blank=True, default='')
+	meta_description = models.TextField(verbose_name= u'SEO description', blank=True, default='')
+	content = RichTextUploadingField(blank=True, null = True, default='',verbose_name=u'Содержание страницы')
+	metadata = {
+	'title': 'title',
+	'use_title_tag' : 'True',
+	'description' : 'get_description',
+	'keywords': 'get_keywords',
+	'url': 'get_full_url',
+	}
+	def get_description(self):
+		description = self.meta_description
+	def get_keywords(self):
+		return self.meta_keywords.strip().split(',')
+	def get_full_url(self):
+		return self.build_absolute_uri(self.get_absolute_url())
+	def get_absolute_url(self):
+		return reverse('article', kwargs={'slug': self.slug})
+
+class Tag(ModelMeta,models.Model):
+	name = models.CharField(max_length=255)
+	slug = models.CharField(max_length=255)
+	meta_keywords = models.TextField(verbose_name= u'SEO keywords', blank=True, default='')
+	meta_description = models.TextField(verbose_name= u'SEO description', blank=True, default='')
+	def __str__(self):
+		return self.name
+	_metadata = {
+	'title': 'title',
+	'use_title_tag' : 'True',
+	'description' : 'get_description',
+	'keywords': 'get_keywords',
+	'url': 'get_full_url',
+	}
+	def get_description(self):
+		description = self.meta_description
+	def get_keywords(self):
+		return self.meta_keywords.strip().split(',')
+	def get_full_url(self):
+		return self.build_absolute_uri(self.get_absolute_url())
+	def get_absolute_url(self):
+		return reverse('article', kwargs={'slug': self.slug})
