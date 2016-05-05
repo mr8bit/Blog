@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 
-
 {% block content %}
 <style type="text/css" media="screen">
 	.card .card-action a:not(.btn):not(.btn-large):not(.btn-floating) {
@@ -48,9 +47,15 @@
 				</div>
 				<div class="chip">
 					Тэги:{% for tag in article.tags.all %}
-					<a href="/category/{{categ.slug}}" >{{tag.name}}</a>
+					        <a href="{% url 'tag' article.slug %}">    {{tag.name}}</a>
 					{% endfor %}
-				 
+				</div>
+				<a href="{% url 'i_like_it' article.slug %}">   
+					<div class="chip">
+
+						<i   class=" small material-icons">thumb_up</i>    {{likecount}}
+					</div>
+				</a>
 			</div>
 		</div>
 </div>

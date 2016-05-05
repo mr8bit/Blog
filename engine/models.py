@@ -3,6 +3,16 @@ from django.db import models
 from meta.models import ModelMeta
 from ckeditor_uploader.fields import RichTextUploadingField
 
+class LikeAriticle(models.Model):
+	count_likes = models.IntegerField(default=0)
+	ip = models.CharField(max_length=100)
+	article = models.ForeignKey('Article')
+
+	class Meta:
+		ordering =['-article']
+		db_table = 'likeandarticle'
+
+
 class Article(ModelMeta,models.Model):
 	time = models.DateTimeField(auto_now_add=True)
 	title = models.CharField(max_length=100)
