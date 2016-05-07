@@ -26,5 +26,4 @@ admin.site.register(Comments, CommentAdmin)
 
 class CategoryAdmin(admin.ModelAdmin):
 	prepopulated_fields = {'slug_category': ('name',)}
-	list_display = ('name' , 'parent')
 admin.site.register(Category, CategoryAdmin)

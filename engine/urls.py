@@ -1,15 +1,16 @@
 
 # -*- coding: utf-8 -*-
 from django.conf.urls import url
-from engine.views import article , category , home , i_like_it , tag
+from engine.views import article , category , home , i_like_it , tag , page
 
 __author__ = 'mr. Byte'
 
 urlpatterns = [
+	#Url for Page
+	url(r'^(?P<slug>[-\w]+)$' ,page , name='page' ),
 
 	#Url for Tag 
 	url(r'^tag/(?P<slug>[-\w]+)$', tag, name='tag'),
-
 
 	#Url for Home and paginator Home 
     url(r'^$', home, name='home'),

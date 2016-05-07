@@ -64,11 +64,11 @@
        {% if not catego.parent_id  %}
           <li>
           {% if catego.type_menu == 'p' %}
-               <a class="button" href="{% url 'page' catego.slug_category%}">
+               <a class="button" href="{% url 'page' catego.page.slug %}">
                     {{catego.name}}
                </a>
           {% else %}
-            <a class="button" href="{% url 'category' catego.slug_category%}">
+            <a class="button" href="{% url 'category' catego.slug_category %}">
                     {{catego.name}}
                </a>
           {% endif %}

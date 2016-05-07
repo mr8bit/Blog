@@ -7,6 +7,7 @@ from . import forms
 from datetime import datetime
 from django.conf import settings
 from django.core.mail import EmailMessage , send_mail
+
 def home(request , page =1):
 	context = {}
 	context['articles'] = Article.objects.all()
@@ -37,7 +38,7 @@ def article(request, slug):
 			comment.article = Article.objects.get(slug=slug)
 			comment.ip = request.META.get('REMOTE_ADDR', '') or request.META.get('HTTP_X_FORWARDED_FOR', '')
 			if(comment.anser_on_id):
-				sendMail(comment , comment.anser_on_id , request  )
+				sendMail(comment , comment.anser_on_id , request)
 			adminMail(comment ,request)
 			form.save()
 			return redirect('/article/%s' % slug)
@@ -66,9 +67,11 @@ def category(request,slug_category,page=1):
 
 def page(request , slug):
 	context={}
+	
 	context['page'] = get_object_or_404(Page , slug=slug)
 	context['meta'] =  get_object_or_404(Page, slug=slug).as_meta(request)
 	context['category'] = Category.objects.all().order_by('sort_in_menu')
+
 	return TemplateResponse(request,'page.html',context)
 
 
@@ -90,9 +93,8 @@ def i_like_it(request, slug):
 
 def  tag(request , slug , page=1):
 	context={}
-	context['tag'] = Tag.objects.get(slug = slug)
-	context['meta'] =  get_object_or_404( Tag, slug=slug).as_meta(request)
-	context['articles'] = Article.objects.filter(category=context['tag'].id)
+	context['tag'] = get_object_or_404(Tag,slug = slug)
+	context['articles'] = Article.objects.filter(tags=context['tag'])
 	context['category'] = Category.objects.all().order_by('sort_in_menu')
 	paginator = Paginator(context['articles'],10)
 	try:

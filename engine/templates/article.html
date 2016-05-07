@@ -47,7 +47,7 @@
 				</div>
 				<div class="chip">
 					Тэги:{% for tag in article.tags.all %}
-					        <a href="{% url 'tag' article.slug %}">    {{tag.name}}</a>
+					        <a href="{% url 'tag' tag.slug %}">    {{tag.name}}</a>
 					{% endfor %}
 				</div>
 				<a href="{% url 'i_like_it' article.slug %}">   
