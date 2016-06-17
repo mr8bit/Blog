@@ -5,166 +5,158 @@
 <html >
 <head> 
     {% include "meta/meta.html" %}  
- 
-      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-      <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-      <link rel="stylesheet" type="text/css" href="{% static 'css/materialize.min.css' %}">
+       <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
       <link rel="stylesheet" type="text/css" href="{% static 'css/prism.css' %}">
-
-   
-
-
- 
- 
-</head>
-<body>
-<style>
-  .card .card-content .card-title {
-    line-height: 30px;
+      <link rel="stylesheet" type="text/css" href="{% static 'semantic.min.css' %}">
+ </head>
+<style>.ui.card a:hover{
+    text-decoration: underline;
 }
-  body {
-    display: flex;
-    min-height: 100vh;
-    flex-direction: column;  background: #f0f0f0;
-  }
-.chip {
-    margin-top: 5px;
-  }
-  main {
-    flex: 1 0 auto;
-  }
-  .content_img
-  {
-  	display: block;
-    margin-left: auto;
-    margin-right: auto;
-  }
-</style>
-<header>
-<div class="container">
-       <div  class="center-align" >
-      <center>
-      <a href="/">
-                <div class=" " style="background:url('{% static 'img/logo4.png' %}'), no-repeat; width:200px;background-size: 200px; height:287px;margin:10px"></div>
-          </a>
-     </center>
-
-   
-      </div> 
-      </div>
+  .ui.segment {
+    position: relative;
+    background-color: #fff;
+    box-shadow: 0 1px 2px 0 rgba(34,36,38,.15);
+    margin: 1rem 0;
+    padding: 1em;
+   border-radius: 0px;  
+    border: 1px solid rgba(34,36,38,.15);
+}.ui.comments {
+    margin: 1.5em 0;
+    max-width: 1900px;
+}.ui.card .content img, .ui.cards>.card .content img {
+    display: block;
+    vertical-align: middle;
+    width: '';
+}
+a{
+  color: black;
+}
+a:hover {
+  color: black;
+ }
  
-   <nav>
-    <div class="container">
+</style>  
 
-     <div class="nav-wrapper ">
-       <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons" style="color:black" >menu</i></a>
- <ul class="left hide-on-med-and-down">
+<body> 
+<div class="full height">
+   <!-- Начало изображение в шапке -->
+  <div class="ui one column centered grid">
+    <div class="sixteen  "> 
+     <a href="/">
+      <div style="background:url('{% static 'img/logo4.png' %}'), no-repeat; width:200px;background-size: 200px; height:286px;margin:20px"></div>
+    </a>
+   </div>
+  </div>
+<!-- Конец изображение в шапке -->
 
-    {% for catego in category %}
+<!-- Начало  Меню -->
+<div class="ui inverted segment">
+  <div class="ui   inverted stackable  secondary tabs pointing menu" style="max-width: 70%; margin:0 auto; ">
+             <a href="/" class="item  " style="display:block;text-align: center;" >Главная </a>
+      {% for catego in category %}
        {% if not catego.parent_id  %}
-          <li>
+    
           {% if catego.type_menu == 'p' %}
-               <a class="button" href="{% url 'page' catego.page.slug %}">
-                    {{catego.name}}
-               </a>
+ 
+                   <a href="{% url 'page' catego.page.slug %}" class="item  " style="display:block;text-align: center;"  >                    {{catego.name}}
+                    </a>
+
           {% else %}
-            <a class="button" href="{% url 'category' catego.slug_category %}">
-                    {{catego.name}}
-               </a>
+                </a> <a href="{% url 'category' catego.slug_category %}" class="item  " style="display:block;text-align: center;"  >                    {{catego.name}}
+                    </a>
           {% endif %}
          
-          </li>
+          
 
         {% endif %}
   
        {% endfor %}
- </ul>
-      <ul class="side-nav" id="mobile-demo">
-            {% for catego in category %}
-                     {% if not catego.parent_id %}
-                             <li><a class="button" href="{% url 'category' catego.slug_category%}">
-                                   {{catego.name}}</a></li>
-                     {% else %}
-
-                     {% endif %}
-
-                
-                        {% endfor %}
-      </ul>
-    </div>
-   </div>
-    
-  </nav>
-</header>
  
- 
- 
- <main>
-<div class="container">
-    <div class="row">
-        <div class="col s12 m12 l12">
-            {% block content %}
-            {% endblock %}
-        </div>
-        
-    </div>
+  </div>
 </div>
-</main>
-        <footer class="page-footer" style="background:#fff;">
-          <div class="container">
-            <div class="row">
-              <div class="col l6 s12">
-                <h5 class="black-text">Footer Content</h5>
-                <p class="black-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
-              </div>
-              <div class="col l4 offset-l2 s12">
-                <h5 class="black-text">Links</h5>
-                <ul>
-                  <li><a class="black-text text-lighten-3" href="#!">Link 1</a></li>
-                  <li><a class="black-text text-lighten-3" href="#!">Link 2</a></li>
-                  <li><a class="black-text text-lighten-3" href="#!">Link 3</a></li>
-                  <li><a class="black-text text-lighten-3" href="#!">Link 4</a></li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div class="footer-copyright" style="background:#272822">
-            <div class="container white-text">
-            © 2014 Copyright Text
-            <a class="white-text text-lighten-4 right" href="#!">More Links</a>
-            </div>
-          </div>
-        </footer>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
-<script type="text/javascript" src="{% static 'js/materialize.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/prism.js' %}"></script>
-<script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
-<script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
+<!-- Конец  Меню -->
+<!-- Начало  Контент -->
+<div class="ui eleven column container grid">
+  {% block content %}
+  {% endblock %} 
+    <div class="striped" style="
+    margin: 10px;
+"></div>
 
-<script>
-$( document ).ready(function(){
-        $(".dropdown-button").dropdown({
-                inDuration: 300,
-      outDuration: 225,
-      constrain_width: false, // Does not change width of dropdown to that of the activator
-       gutter: 0, // Spacing from edge
-      belowOrigin: true , // Displays dropdown below the button
-      alignment: 'left', // Displays dropdown with edge aligned to the left of button
+</div>
+ </div>
  
-        });
-    $(".button-collapse").sideNav();
-          $('img').addClass('responsive-img');
-          if($("img").hasClass("content_img")){
 
-          }
-          else{
-            $('img').addClass('materialboxed');
-          }
-          $('img').removeAttr("style");
-            
-          $('.materialboxed').materialbox();
 
-})
-</script>
+
+ 
+<!-- Конец  Контента -->
+<div class="ui black inverted vertical footer segment">
+  <div class="ui center aligned container" style="
+    padding: 20px 0 0 0;">
+    <div class="ui stackable inverted grid">
+   
+  
+        <div class="five wide column">
+                <h4 class="ui inverted header">Тэги для поиска</h4>
+<div class="ui blue labels">
+  {% for tag in tags %}
+
+          <a class="ui label">
+    {{tag}}
+  </a>
+  
+       {% endfor %}
+ 
+</div>
+        </div>
+            <div class="five wide column">
+        <h4 class="ui inverted header">О проекте</h4>
+         <div class="ui inverted">    
+Сайт создан с помощью Django v1.9.5. <br>Весь код размешён на Github.
+          </div>
+        <div class="ui inverted link list">
+                        <a class="item" href="http://1.semantic-ui.com"><i class="big github icon"></i>
+
+</a>
+          <a class="item" href="http://legacy.semantic-ui.com"><i class="big youtube play icon"></i></a>
+
+          <a class="item" href="http://legacy.semantic-ui.com"><i class="big vk icon"></i></a>
+
+
+        </div>
+      </div>
+      <div class="five wide right floated column  ">
+<div class="ui medium rectangle test ad"  style="margin: 0 auto;" data-text="Medium Rectangle"></div>
+
+      </div>
+    </div>
+    <div class="ui inverted section divider"></div>
+     <div class="ui horizontal inverted small divided link list ">
+      <a class="item">Copyright by Mr.Byte 2015-2016</a>
+    </div>
+  </div>
+</div>
+ 
+
+
+
+
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+  <script src="{% static 'semantic.min.js' %}"></script> 
+  <script type="text/javascript" src="{% static 'js/prism.js' %}"></script>
+  <script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+  <script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
+
+  <script>
+
+
+    $('img').addClass('ui centered large image');
+
+
+  </script>
+
 </body>
 </html>

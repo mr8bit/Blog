@@ -12,10 +12,10 @@ class LikeAriticle(models.Model):
 		ordering =['-article']
 		db_table = 'likeandarticle'
 
-
+# Модель статьи 
 class Article(ModelMeta,models.Model):
-	time = models.DateTimeField(auto_now_add=True)
-	title = models.CharField(max_length=100)
+	time = models.DateTimeField(auto_now_add=True)# Время добавляется автоматически
+	title = models.CharField(max_length=100) # Название статьи с мак. кол. букв 100
 	slug = models.SlugField()
 	meta_keywords = models.TextField(verbose_name= u'SEO keywords', blank=True, default='')
 	meta_description = models.TextField(verbose_name= u'SEO description', blank=True, default='')
@@ -102,13 +102,14 @@ class Page(ModelMeta,models.Model):
 	meta_keywords = models.TextField(verbose_name= u'SEO keywords', blank=True, default='')
 	meta_description = models.TextField(verbose_name= u'SEO description', blank=True, default='')
 	content = RichTextUploadingField(blank=True, null = True, default='',verbose_name=u'Содержание страницы')
-	metadata = {
-	'title': 'title',
-	'use_title_tag' : 'True',
-	'description' : 'get_description',
-	'keywords': 'get_keywords',
-	'url': 'get_full_url',
-	}
+ 
+ 
+	_metadata = {
+		'title': 'title',
+		'use_title_tag': 'True',
+		'description': 'get_description',
+		'keywords': 'get_keywords',
+ 	}
 	def __str__(self):
 		return self.title
 	def get_description(self):

@@ -2,7 +2,7 @@
 from django.contrib import admin
 from engine.models import Article , Category, Page, Tag , Comments 
 
-class ArticleAdmin(admin.ModelAdmin):
+class ArticleAdmin(admin.ModelAdmin):# Модель админа 
     prepopulated_fields = {'slug': ('title',)}
     list_display = ('title', 'time')
 admin.site.register(Article, ArticleAdmin)

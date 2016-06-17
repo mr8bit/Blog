@@ -1,76 +1,85 @@
 {% extends 'base.html' %}
 
-
+ 
 {% block content %}
-  <style type="text/css" media="screen">
-   .card .card-content p {
-    margin: 10px 0;
-    color: inherit;
-} .card .card-action a:not(.btn):not(.btn-large):not(.btn-floating) {
-    color: #f44336;
-    margin-right: 5px;
-    transition: color .3s ease;
-    text-transform: none;
-  }
-  .card .card-action a:not(.btn):not(.btn-large):not(.btn-floating):hover {
-    color: #ef9a9a;
-  }
-  .chip i.material-icons {
-    cursor: pointer;
-    float: left;
-    padding-right: 8px;
-    font-size: 16px;
-    line-height: 32px;
-    padding-left: 0px; }
-    select {
-      display: block;
-    }
-    h1 {
-    font-size: 2.2rem;
-    line-height: 110%;
-    margin:1.0rem 0 1.0rem 0;
-}
- </style>
-         {% for article in articles %}
-               <div class="card">
-               <div class="card-content black-text">
-             <a style="color:black" href="{% url 'article' article.slug %}">  <span class="card-title">{{ article }}</span></a>
-               <p>{{ article.time }}   </p> 
-         
-              <p>{{ article.summary|safe }}<br></p>
-            </div>
-            <div class="card-action">
-        <div class="chip">
-          Категории:{% for categ in article.category.all %}
-          <a href="/category/{{categ.slug_category}}" >{{categ.name}}</a>
-          {% endfor %}
-        </div>
-        <a href="{% url 'i_like_it' article.slug %}">   
-          <div class="chip">
 
-            <i   class=" small material-icons">thumb_up</i>    {{article.likes}}
-          </div>
-        </a>
-      </div>
-          </div>
+    
+     
+         {% for article in articles %}
+          <div class="row"> 
+ <div class="ui  card fluid">
+  <div class="content">
+                        
+<h1 class="header" style="text-align: left;"> <a href="{% url 'article' article.slug %}">{{ article }}</a></h1>
+     <div class="meta" style="text-align: left;">
+ {{ article.time }}   
+    </div>
+  </div>
+  <div class="content"> 
+  <div class="description" style="text-align: left;">
+             {{ article.summary|safe }} 
+  </div>
+       
+      
+  </div>
+  <div class="extra content">
+ <span class="left floated">        
+      <a href="{% url 'i_like_it' article.slug %}">   
+          <i class="heart outline like icon"></i>
+      </a>
+      {{ article.likes }} 
+    </span>
+
+
+     <span class="right floated">
+
+      {% for categ in article.category.all %}
+            <a href="{% url 'article' article.slug %}">{{categ.name}}</a>
+       {% endfor %}
+    </span>
+
+ </div>
+
+</div>
+</div>
      {% endfor %}
-            <ul class="pagination">
-                {% if articles.has_previous %}
-                    <li class="waves-effect"><a href="/tag/{{tags.slug}}/page/{{ articles.previous_page_number }}"><i class="material-icons">chevron_left</i></a></li>
-                 {% else %}
-                   <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
-                {% endif %}
-                {% for page in articles.paginator.page_range %}
-                    {% if page == articles.number %}
-                        <li class="active"><a href="/tag/{{tags.slug}}/page/{{ page }}">{{ page }}</a></li>
-                    {% else %}
-                        <li><a href="/tag/{{tags.slug}}/page/{{ page }}">{{ page }}</a></li>
-                    {% endif %}
-                {% endfor %}
-                {% if articles.has_next %}
-                    <li class="waves-effect"><a href="/tag/{{tags.slug}}/page/{{ articles.next_page_number }}"><i class="material-icons">chevron_right</i></a></li>
-                {% else %}
-                   <li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
-                {% endif %}
-            </ul>
+  <style>
+.ui.card .content img, .ui.cards>.card .content img {
+    display: block;
+    vertical-align: middle;
+    width: '';
+}
+a{
+  color: black;
+}
+a:hover {
+  color: black;
+ }
+</style>
+
+
+ 
+
+   <div class="row centered">
+        <div class="ui pagination menu">
+  <a class="active item">
+    1
+  </a>
+  <div class="disabled item">
+    ...
+  </div>
+  <a class="item">
+    10
+  </a>
+  <a class="item">
+    11
+  </a>
+  <a class="item">
+    12
+  </a>
+</div>
+ </div>
+         
+ 
+
 {% endblock %}

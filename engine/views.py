@@ -10,6 +10,8 @@ from django.core.mail import EmailMessage , send_mail
 
 def home(request , page =1):
 	context = {}
+	context['tags'] =  Tag.objects.all()
+	context['meta'] =  get_object_or_404( Page, slug="main_page").as_meta(request)
 	context['articles'] = Article.objects.all()
 	context['category'] = Category.objects.all().order_by('sort_in_menu')
 	paginator = Paginator(context['articles'],10)
@@ -24,6 +26,7 @@ def home(request , page =1):
 
 def article(request, slug):
 	context = {}
+	context['tags'] =  Tag.objects.all()
 	context['article'] = get_object_or_404(Article, slug=slug)
 	context['comment_form'] = forms.CommentForm
 	context['meta'] =  get_object_or_404(Article, slug=slug).as_meta(request)
@@ -51,6 +54,7 @@ def article(request, slug):
 
 def category(request,slug_category,page=1):
 	context={}
+	context['tags'] =  Tag.objects.all()
 	context['categor'] = Category.objects.get(slug_category = slug_category)
 	context['meta'] =  get_object_or_404( Category, slug_category=slug_category).as_meta(request)
 	context['articles'] = Article.objects.filter(category=context['categor'].id)
@@ -67,7 +71,7 @@ def category(request,slug_category,page=1):
 
 def page(request , slug):
 	context={}
-	
+	context['tags'] =  Tag.objects.all()
 	context['page'] = get_object_or_404(Page , slug=slug)
 	context['meta'] =  get_object_or_404(Page, slug=slug).as_meta(request)
 	context['category'] = Category.objects.all().order_by('sort_in_menu')
@@ -93,6 +97,7 @@ def i_like_it(request, slug):
 
 def  tag(request , slug , page=1):
 	context={}
+	context['tags'] =  Tag.objects.all()
 	context['tag'] = get_object_or_404(Tag,slug = slug)
 	context['articles'] = Article.objects.filter(tags=context['tag'])
 	context['category'] = Category.objects.all().order_by('sort_in_menu')

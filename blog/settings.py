@@ -25,7 +25,7 @@ SECRET_KEY = 'uoh@&=i-2!v$+wz(!k0%9yf6keg0g7r1k#h%hacbfxte6fuor^'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+
 
 
 EMAIL_HOST = 'smtp.gmail.com'
@@ -49,10 +49,15 @@ INSTALLED_APPS = [
     'meta',
     'sekizai',
     'ckeditor',
-    'ckeditor_uploader',
-    'engine'
-]
+        'captcha',
 
+    'ckeditor_uploader',
+    'engine',
+]
+RECAPTCHA_PUBLIC_KEY = '6LfByCITAAAAABop_4tXftuaf7DsHYLcZEkia6lV'
+RECAPTCHA_PRIVATE_KEY = '6LfByCITAAAAANjoQ3wfrGBB5zf1KrIbnAG7F0eV'
+NOCAPTCHA = True
+ 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
