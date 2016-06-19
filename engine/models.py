@@ -2,6 +2,8 @@
 from django.db import models
 from meta.models import ModelMeta
 from ckeditor_uploader.fields import RichTextUploadingField
+from django.contrib.sitemaps import Sitemap
+ 
 
 class LikeAriticle(models.Model):
 	count_likes = models.IntegerField(default=0)
@@ -12,9 +14,18 @@ class LikeAriticle(models.Model):
 		ordering =['-article']
 		db_table = 'likeandarticle'
 
+
+class StaticSitemap(Sitemap):
+    def items(self):
+        return Page.objects.all()
+
+class BlogSitemap(Sitemap):	
+	def items(self):
+		return Article.objects.all()
+
 # Модель статьи 
 class Article(ModelMeta,models.Model):
-	time = models.DateTimeField(auto_now_add=True)# Время добавляется автоматически
+	time = models.DateTimeField(verbose_name= u'Дата побликации')# Время добавляется автоматически
 	title = models.CharField(max_length=100) # Название статьи с мак. кол. букв 100
 	slug = models.SlugField()
 	meta_keywords = models.TextField(verbose_name= u'SEO keywords', blank=True, default='')
@@ -37,7 +48,8 @@ class Article(ModelMeta,models.Model):
 		'object_type': 'Article',
         'og_type': 'Article'
 	}
-
+	def get_absolute_url(self):
+		return "/article/"+self.slug+"/"
  
     
  
@@ -102,7 +114,7 @@ class Page(ModelMeta,models.Model):
 	meta_keywords = models.TextField(verbose_name= u'SEO keywords', blank=True, default='')
 	meta_description = models.TextField(verbose_name= u'SEO description', blank=True, default='')
 	content = RichTextUploadingField(blank=True, null = True, default='',verbose_name=u'Содержание страницы')
- 
+
  
 	_metadata = {
 		'title': 'title',
@@ -116,30 +128,27 @@ class Page(ModelMeta,models.Model):
 		description = self.meta_description
 	def get_keywords(self):
 		return self.meta_keywords.strip().split(',')
-	def get_full_url(self):
-		return self.build_absolute_uri(self.get_absolute_url())
 	def get_absolute_url(self):
-		return reverse('article', kwargs={'slug': self.slug})
-
+		return "/"+self.slug
+ 
 class Tag(ModelMeta,models.Model):
 	name = models.CharField(max_length=255)
 	slug = models.CharField(max_length=255)
 	meta_keywords = models.TextField(verbose_name= u'SEO keywords', blank=True, default='')
 	meta_description = models.TextField(verbose_name= u'SEO description', blank=True, default='')
-	def __str__(self):
-		return self.name
+	
+
 	_metadata = {
-	'title': 'title',
+	'title': 'name',
 	'use_title_tag' : 'True',
 	'description' : 'get_description',
 	'keywords': 'get_keywords',
-	'url': 'get_full_url',
-	}
+ 	}
+	def __str__(self):
+		return self.name
 	def get_description(self):
 		description = self.meta_description
 	def get_keywords(self):
 		return self.meta_keywords.strip().split(',')
-	def get_full_url(self):
-		return self.build_absolute_uri(self.get_absolute_url())
-	def get_absolute_url(self):
-		return reverse('article', kwargs={'slug': self.slug})
+ 
+ 

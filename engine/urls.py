@@ -1,16 +1,24 @@
 
 # -*- coding: utf-8 -*-
 from django.conf.urls import url
+from engine.models import BlogSitemap, StaticSitemap
 from engine.views import article , category , home , i_like_it , tag , page
 
 __author__ = 'mr. Byte'
 
+sitemaps = {
+	'posts': BlogSitemap,
+	'static': StaticSitemap,
+}
+
 urlpatterns = [
 	#Url for Page
 	url(r'^(?P<slug>[-\w]+)$' ,page , name='page' ),
+	url(r'^sitemap\.xml$', 'django.contrib.sitemaps.views.sitemap', {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
 
 	#Url for Tag 
 	url(r'^tag/(?P<slug>[-\w]+)$', tag, name='tag'),
+	url(r'^tag/(?P<slug>[-\w]+)/page/(?P<page>[-\d]+)$', tag),
 
 	#Url for Home and paginator Home 
     url(r'^$', home, name='home'),

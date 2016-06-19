@@ -1,67 +1,65 @@
 {% extends 'base.html' %}
 
- 
+
 {% block content %}
 
-    
-     
-         {% for article in articles %}
-          <div class="row"> 
+
+
+{% for article in articles %}
+<div class="row"> 
  <div class="ui  card fluid">
-  <div class="content">
-                        
-<h1 class="header" style="text-align: left;"> <a href="{% url 'article' article.slug %}">{{ article }}</a></h1>
-     <div class="meta" style="text-align: left;">
- {{ article.time }}   
-    </div>
-  </div>
-  <div class="content"> 
-  <div class="description" style="text-align: left;">
-             {{ article.summary|safe }} 
-  </div>
-       
-      
-  </div>
-  <div class="extra content">
- <span class="left floated">        
-      <a href="{% url 'i_like_it' article.slug %}">   
-          <i class="heart outline like icon"></i>
-      </a>
-      {{ article.likes }} 
-    </span>
-
-
-     <span class="right floated">
-
-      {% for categ in article.category.all %}
-            <a href="{% url 'category' categ.slug_category %}">{{categ.name}}</a>
-       {% endfor %}
-    </span>
-
- </div>
-
-</div>
-</div>
-     {% endfor %}
-
-     <div class="row centered">
-      <div class="ui pagination menu">
-          
-           
-                {% for page in articles.paginator.page_range %}
-                    {% if page == articles.number %}
-                         <a class="active item" href="/page/{{ page }}">{{ page }}</a> 
-                    {% else %}
-                        <a  class="item" href="/page/{{ page }}">{{ page }}</a> 
-                    {% endif %}
-                {% endfor %}
-         
-         
-
- 
+    <div class="content">
+      <h1 class="header"  >
+          <a class="header_link" href="{% url 'article' article.slug %}">  
+{{ article }} </a>
+      </h1>
+     <div class="meta"  >
+     {{ article.time }}   
       </div>
     </div>
-         
+    <div class="content"> 
+        <div class="description"  >
+            {{ article.summary|safe }} 
+        </div>
+    </div>
  
+<div class="extra content">
+ <span class="left floated">        
+  <a href="{% url 'i_like_it' article.slug %}">   
+    <i class="heart outline like icon"></i>
+  </a>
+  {{ article.likes }} 
+</span>
+<span class="right floated">
+  {% for categ in article.category.all %}
+  <a href="{% url 'category' categ.slug_category %}">{{categ.name}}</a>
+  {% endfor %}
+</span>
+
+</div>
+
+</div>
+</div>
+{% endfor %}
+
+<div class="row centered">
+  <div class="ui pagination menu">
+
+
+    {% for page in articles.paginator.page_range %}
+    {% if page == articles.number %}
+    <a class="active item" href="/page/{{ page }}">{{ page }}</a> 
+    {% else %}
+    <a  class="item" href="/page/{{ page }}">{{ page }}</a> 
+    {% endif %}
+    {% endfor %}
+
+
+
+
+  </div>
+</div>
+
+
 
 {% endblock %}

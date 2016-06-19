@@ -23,15 +23,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'uoh@&=i-2!v$+wz(!k0%9yf6keg0g7r1k#h%hacbfxte6fuor^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
+ALLOWED_HOSTS = ['*']
 
 
 
-
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = '69kissmysausage@gmail.com'
-EMAIL_HOST_PASSWORD = 'geniusRu1ledArt'
-EMAIL_PORT = 587 
+EMAIL_HOST = 'smtp.mail.ru'
+EMAIL_HOST_USER = 'info@mrbyte.ru'
+EMAIL_HOST_PASSWORD = 'geniusRu1led'
+EMAIL_PORT = 2525 
 EMAIL_USE_TLS = True
 
 
@@ -45,17 +45,18 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.sitemaps',
     'django.contrib.staticfiles',
     'meta',
     'sekizai',
     'ckeditor',
-        'captcha',
-
+    'captcha',
     'ckeditor_uploader',
     'engine',
 ]
-RECAPTCHA_PUBLIC_KEY = '6LfByCITAAAAABop_4tXftuaf7DsHYLcZEkia6lV'
-RECAPTCHA_PRIVATE_KEY = '6LfByCITAAAAANjoQ3wfrGBB5zf1KrIbnAG7F0eV'
+
+RECAPTCHA_PUBLIC_KEY = '6Ldq9SITAAAAAJxqia9t0qhz5bXBhRAE6QraxV71'
+RECAPTCHA_PRIVATE_KEY = '6Ldq9SITAAAAAHpTH3MCchJlglGFpqpxrDDIh9d_'
 NOCAPTCHA = True
  
 MIDDLEWARE_CLASSES = [
@@ -139,15 +140,11 @@ SITE_ID = 1
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR, '/static/')
-
+STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (
-    # Put strings here, like "/home/html/static" or "C:/www/django/static".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-           os.path.join(BASE_DIR, "static"),
-)
+STATICFILES_DIRS = ( os.path.join(STATIC_ROOT, 'files'), )
+
+
 REDACTOR_OPTIONS = {'lang': 'ru'}
 REDACTOR_UPLOAD = 'uploads/'
 

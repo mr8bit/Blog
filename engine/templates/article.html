@@ -11,6 +11,10 @@
 }a:hover {
   color: black;
   }
+  .ui.comments .comment .comments {
+    margin: 0 0 .1em .5em;
+    padding: .5em 0 0.5em 1em;
+}
 </style>
 <div class="row"> 
 	<div class="ui  card fluid">
@@ -45,7 +49,7 @@
 			</div>
 
 		</div>
-<div class="ui one column container grid">
+<div class="ui one row">
 <div class="column">
 		<div class="ui     comments">
 			{% if comment %}
@@ -53,6 +57,7 @@
 			{%  for commen in comment %}
 			{% if not commen.anser_on_id %}
 			<div class="comment">
+
 				<div class="content">
 					<span class="author">{{commen.name}}</span>
 					<div class="metadata">
@@ -80,9 +85,62 @@
 							<a data='{{comme.name}}' onclick="iHaveAnswer(this)" id='{{comme.id}}' href="#answer" class="reply">Ответить</a>
 						</div>
 					</div>
+					{%  for comm in comment %}
+				{% if comm.anser_on_id == comme.id %}
+				<div class="comments">
+					<div class="content">
+						<a class="author">{{comm.name}}</a>
+						<div class="metadata">
+							<span class="date">{{comm.time}}</span>
+						</div>
+						<div class="text">
+							{{comm.comment|safe}}
+						</div>
+						<div class="actions">
+							<a data='{{comm.name}}' onclick="iHaveAnswer(this)" id='{{comm.id}}' href="#answer" class="reply">Ответить</a>
+						</div>
+					</div>
+							{%  for com in comment %}
+				{% if com.anser_on_id == comm.id %}
+				<div class="comments">
+					<div class="content">
+						<a class="author">{{com.name}}</a>
+						<div class="metadata">
+							<span class="date">{{com.time}}</span>
+						</div>
+						<div class="text">
+							{{com.comment|safe}}
+						</div>
+						<div class="actions">
+							<a data='{{com.name}}' onclick="iHaveAnswer(this)" id='{{com.id}}' href="#answer" class="reply">Ответить</a>
+						</div>
+					</div>
+								{%  for co in comment %}
+				{% if co.anser_on_id == com.id %}
+				<div class="comments">
+					<div class="content">
+						<a class="author">{{co.name}}</a>
+						<div class="metadata">
+							<span class="date">{{co.time}}</span>
+						</div>
+						<div class="text">
+							{{co.comment|safe}}
+						</div>
+						<div class="actions">
+							<a data='{{co.name}}' onclick="iHaveAnswer(this)" id='{{co.id}}' href="#answer" class="reply">Ответить</a>
+						</div>
+					</div>
 				</div>
-
-
+				{% endif %}
+				{% endfor %}
+				</div>
+				{% endif %}
+				{% endfor %}
+				</div>
+				{% endif %}
+				{% endfor %}
+				</div>
+				 
 				{% endif %}
 				{% endfor %} 
 
@@ -96,10 +154,13 @@
 			{% endif %}   
 			</div>
 
-</div>
+</div>    <div class="striped" style="
+    margin: 10px;
+"></div>
 <div class="column">
 			<form  id="answer" action="/article/{{article.slug}}" method="post" class="ui form">
- 			<h3 class="ui dividing header "  id="answer_title">Добавить комментарий</h3>
+ 			 	{% csrf_token %}
+ 				<h3 class="ui dividing header "  id="answer_title">Добавить комментарий</h3>
 
 				<div class="field">
 					<label>{{ comment_form.name.label }}</label>
@@ -139,6 +200,8 @@
 	}
 </script>
  
-
+  <script>
+    $('img').addClass('ui centered large image');
+  </script>
 
 {% endblock%}

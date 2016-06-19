@@ -7,14 +7,16 @@ from . import forms
 from datetime import datetime
 from django.conf import settings
 from django.core.mail import EmailMessage , send_mail
+import datetime
 
 def home(request , page =1):
 	context = {}
 	context['tags'] =  Tag.objects.all()
+	start_date = datetime.date(2005, 1, 1)
 	context['meta'] =  get_object_or_404( Page, slug="main_page").as_meta(request)
-	context['articles'] = Article.objects.all()
+	context['articles'] = Article.objects.filter( time__range=(start_date, datetime.datetime.now()))
 	context['category'] = Category.objects.all().order_by('sort_in_menu')
-	paginator = Paginator(context['articles'],10)
+	paginator = Paginator(context['articles'],1)
 	try:
 		context['articles'] = paginator.page(page)
 	except PageNotAnInteger:
@@ -22,6 +24,24 @@ def home(request , page =1):
 	except EmptyPage:
 		context['articles'] = paginator.page(paginator.num_pages)
 	return TemplateResponse(request, 'index.html', context )
+
+
+def tag(request, slug, page=1):
+	context = {}
+	context['tags'] =  Tag.objects.all()
+	context['tag'] =  get_object_or_404( Tag, slug=slug)
+	start_date = datetime.date(2005, 1, 1)
+	context['meta'] =  get_object_or_404( Page, slug="main_page").as_meta(request)
+	context['articles'] = Article.objects.filter(tags=context['tag'].id).filter( time__range=(start_date, datetime.datetime.now()))
+	context['category'] = Category.objects.all().order_by('sort_in_menu')
+	paginator = Paginator(context['articles'],1)
+	try:
+		context['articles'] = paginator.page(page)
+	except PageNotAnInteger:
+		context['articles'] = paginator.page(1)
+	except EmptyPage:
+		context['articles'] = paginator.page(paginator.num_pages)
+	return TemplateResponse(request, 'tag.html', context )
 
 
 def article(request, slug):
@@ -37,7 +57,7 @@ def article(request, slug):
 		form = forms.CommentForm(request.POST)
 		if form.is_valid():
 			comment = form.save(commit=False)
-			comment.time = datetime.now()
+			comment.time = datetime.datetime.now()
 			comment.article = Article.objects.get(slug=slug)
 			comment.ip = request.META.get('REMOTE_ADDR', '') or request.META.get('HTTP_X_FORWARDED_FOR', '')
 			if(comment.anser_on_id):
@@ -54,12 +74,13 @@ def article(request, slug):
 
 def category(request,slug_category,page=1):
 	context={}
+	start_date = datetime.date(2005, 1, 1)
 	context['tags'] =  Tag.objects.all()
 	context['categor'] = Category.objects.get(slug_category = slug_category)
 	context['meta'] =  get_object_or_404( Category, slug_category=slug_category).as_meta(request)
-	context['articles'] = Article.objects.filter(category=context['categor'].id)
+	context['articles'] = Article.objects.filter(category=context['categor'].id).filter( time__range=(start_date, datetime.datetime.now()))
 	context['category'] = Category.objects.all().order_by('sort_in_menu')
-	paginator = Paginator(context['articles'],10)
+	paginator = Paginator(context['articles'],1)
 	try:
 		context['articles'] = paginator.page(page)
 	except PageNotAnInteger:
@@ -94,21 +115,7 @@ def i_like_it(request, slug):
 			nn.save()
 			article.save()
 	return redirect('/article/%s' % slug )
-
-def  tag(request , slug , page=1):
-	context={}
-	context['tags'] =  Tag.objects.all()
-	context['tag'] = get_object_or_404(Tag,slug = slug)
-	context['articles'] = Article.objects.filter(tags=context['tag'])
-	context['category'] = Category.objects.all().order_by('sort_in_menu')
-	paginator = Paginator(context['articles'],10)
-	try:
-		context['articles'] = paginator.page(page)
-	except PageNotAnInteger:
-		context['articles'] = paginator.page(1)
-	except EmptyPage:
-		context['articles'] = paginator.page(paginator.num_pages)
-	return TemplateResponse(request , 'tag.html', context)
+ 
 
 
 def sendMail(comment, to_answer, reques): 

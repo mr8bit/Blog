@@ -1,85 +1,65 @@
 {% extends 'base.html' %}
 
- 
+
 {% block content %}
 
-    
-     
-         {% for article in articles %}
-          <div class="row"> 
+
+
+{% for article in articles %}
+<div class="row"> 
  <div class="ui  card fluid">
-  <div class="content">
-                        
-<h1 class="header" style="text-align: left;"> <a href="{% url 'article' article.slug %}">{{ article }}</a></h1>
-     <div class="meta" style="text-align: left;">
- {{ article.time }}   
+    <div class="content">
+      <h1 class="header"  >
+          <a class="header_link" href="{% url 'article' article.slug %}">  
+{{ article }} </a>
+      </h1>
+     <div class="meta"  >
+     {{ article.time }}   
+      </div>
     </div>
-  </div>
-  <div class="content"> 
-  <div class="description" style="text-align: left;">
-             {{ article.summary|safe }} 
-  </div>
-       
-      
-  </div>
-  <div class="extra content">
+    <div class="content"> 
+        <div class="description"  >
+            {{ article.summary|safe }} 
+        </div>
+    </div>
+ 
+<div class="extra content">
  <span class="left floated">        
-      <a href="{% url 'i_like_it' article.slug %}">   
-          <i class="heart outline like icon"></i>
-      </a>
-      {{ article.likes }} 
-    </span>
-
-
-     <span class="right floated">
-
-      {% for categ in article.category.all %}
-            <a href="{% url 'article' article.slug %}">{{categ.name}}</a>
-       {% endfor %}
-    </span>
-
- </div>
-
-</div>
-</div>
-     {% endfor %}
-  <style>
-.ui.card .content img, .ui.cards>.card .content img {
-    display: block;
-    vertical-align: middle;
-    width: '';
-}
-a{
-  color: black;
-}
-a:hover {
-  color: black;
- }
-</style>
-
-
- 
-
-   <div class="row centered">
-        <div class="ui pagination menu">
-  <a class="active item">
-    1
+  <a href="{% url 'i_like_it' article.slug %}">   
+    <i class="heart outline like icon"></i>
   </a>
-  <div class="disabled item">
-    ...
+  {{ article.likes }} 
+</span>
+<span class="right floated">
+  {% for categ in article.category.all %}
+  <a href="{% url 'category' categ.slug_category %}">{{categ.name}}</a>
+  {% endfor %}
+</span>
+
+</div>
+
+</div>
+</div>
+{% endfor %}
+
+<div class="row centered">
+  <div class="ui pagination menu">
+
+
+    {% for page in articles.paginator.page_range %}
+    {% if page == articles.number %}
+    <a class="active item" href="/tag/{{tag.slug}}/page/{{ page }}">{{ page }}</a> 
+    {% else %}
+    <a  class="item" href="/tag/{{tag.slug}}/page/{{ page }}">{{ page }}</a> 
+    {% endif %}
+    {% endfor %}
+
+
+
+
   </div>
-  <a class="item">
-    10
-  </a>
-  <a class="item">
-    11
-  </a>
-  <a class="item">
-    12
-  </a>
 </div>
- </div>
-         
- 
+
+
 
 {% endblock %}
