@@ -64,7 +64,7 @@ def article(request, slug):
 				sendMail(comment , comment.anser_on_id , request)
 			adminMail(comment ,request)
 			form.save()
-			return redirect('/article/%s' % slug)
+			return redirect('/article/{0!s}'.format(slug))
 		else: 
 			context['comment_form'] = form
 	else:
@@ -114,7 +114,7 @@ def i_like_it(request, slug):
 			nn = LikeAriticle(ip=ip, article=article)
 			nn.save()
 			article.save()
-	return redirect('/article/%s' % slug )
+	return redirect('/article/{0!s}'.format(slug) )
  
 
 
@@ -125,7 +125,7 @@ def sendMail(comment, to_answer, reques):
 	msg.send()
 
 def adminMail(comment,reques):
-	answer = "<h1> Вас приведствует сайт Mr.Byte blog </h1></br><h3>Время "+str(comment.time)+"</h3><h4>Недавно вам оставил комментарий, " + str(comment.name)  + "</h5></br>"+str(comment.comment)+'<div>Для ответа прейдите по ссылке <a href="%s">Ответить</a></div>' % reques.get_full_path()
+	answer = "<h1> Вас приведствует сайт Mr.Byte blog </h1></br><h3>Время "+str(comment.time)+"</h3><h4>Недавно вам оставил комментарий, " + str(comment.name)  + "</h5></br>"+str(comment.comment)+'<div>Для ответа прейдите по ссылке <a href="{0!s}">Ответить</a></div>'.format(reques.get_full_path())
 	msg = EmailMessage('У вас новый комментарий от пользователя '+comment.name,answer,settings.EMAIL_HOST_USER,['simplex.bro@gmail.com'] )
 	msg.content_subtype = "html"
 	msg.send()
